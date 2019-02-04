@@ -1,29 +1,33 @@
+// Initialize required modules
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var CFonts = require("cfonts");
 
+// Initialize global variables
 var msg = "";
 var list = [];
 var product;
 var quantity;
 
+// Initialize colors for console display
 var red = "\x1b[37m\x1b[41m";
 var blue = "\x1b[37m\x1b[44m";
 var blink = "\x1b[5m";
 var reset = "\x1b[0m";
 
+// Initialize SQL connection
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
     database: "bamazon"
 });
-
 connection.connect(function (err) {
     if (err) throw err;
     start();
 });
 
+// Start app
 function start() {
     console.clear();
     console.log("\n\n");
@@ -42,7 +46,9 @@ function start() {
     setTimeout(displayInven, 3000);
 };
 
+// Display inventory
 function displayInven() {
+    // Connect to SQL DB to show list of products
     connection.query(`SELECT * FROM products`, function (err, res) {
         if (err) throw err;
         list = res;
@@ -59,6 +65,7 @@ function displayInven() {
     });
 };
 
+// Ask product id#
 function enterItem() {
     inquirer.prompt([
         {
@@ -138,6 +145,7 @@ function tryAgain() {
         }
     ]).then(function (answer) {
         if (answer.ask === "YES / buy more") {
+            msg = "";
             displayInven();
         } else {
             connection.end();
