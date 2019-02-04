@@ -10,6 +10,12 @@ This is an Amazon-like storefront with the MySQL. The app will take in orders fr
 ![Alt text](./tty.gif)
 
 
+### Key Commands to Enchance UI @ Terminal
+
+* concole.clear() - Clear the terminal screen
+* console.table() - Display DB with table style
+* (ANSI Color codes) - Colored text 
+
 ### Technology Used
 
 * Javascript
