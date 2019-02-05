@@ -8,6 +8,7 @@ var msg = "";
 var list = [];
 var product;
 var quantity;
+var total = 0;
 
 // Initialize colors for console display
 var red = "\x1b[37m\x1b[41m";
@@ -123,6 +124,8 @@ function checkOut() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
         list = res;
+        var subTotal = list[product].Price * quantity;
+
         var transformed = list.reduce(function (acc, { Item_ID, ...x }) {
             acc[Item_ID] = x;
             return acc
@@ -130,7 +133,14 @@ function checkOut() {
         console.clear();
         console.log("\n\n");
         console.table(transformed);
-        console.log("\n" + " ".repeat(27) + blue + " Total price is $" + (list[product].Price * quantity).toFixed(2) + " " + reset + "\n");
+        if (total === 0) {
+            total = subTotal;
+            console.log("\n" + " ".repeat(27) + blue + " Total price is $" + total.toFixed(2) + " " + reset + "\n");
+        } else {
+            total += subTotal;
+            console.log("\n" + " ".repeat(15) + blue + " Subtotal is $" + subTotal.toFixed(2) + " & Grand total is $" + total.toFixed(2) + " " + reset + "\n");
+        };
+
         tryAgain();
     });
 };
